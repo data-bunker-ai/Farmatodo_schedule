@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kickoff Farmatodo Colombia | Data Bunker</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#070d1f;--surface:#0d1635;--card:#101b3e;--card-h:#152148;
+      --b:rgba(0,200,255,.15);--bs:rgba(255,255,255,.055);
+      --c:#00c8ff;--cd:rgba(0,200,255,.1);
+      --p:#7c3aed;--pd:rgba(124,58,237,.14);
+      --g:#10b981;--gd:rgba(16,185,129,.12);
+      --o:#f59e0b;--od:rgba(245,158,11,.12);
+      --r:#ef4444;--rd:rgba(239,68,68,.1);
+      --tx:#e2e8f0;--mu:#8899b8;--fa:#475569;
+      --rr:12px;--rl:18px;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.65}
+    a{color:var(--c);text-decoration:none}
+    a:hover{text-decoration:underline}
+    code{background:rgba(0,200,255,.1);color:var(--c);padding:2px 7px;border-radius:5px;font-size:.86em;font-family:'Cascadia Code','Fira Code',monospace}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:100;background:rgba(7,13,31,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--b);height:60px;padding:0 2rem;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:.95rem;letter-spacing:.07em;color:#fff}
+    .brand-ico{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--c),var(--p));display:flex;align-items:center;justify-content:center;font-size:16px}
+    .nav-links{display:flex;gap:1.6rem;list-style:none}
+    .nav-links a{color:var(--mu);font-size:.83rem;font-weight:500;letter-spacing:.03em;transition:color .2s}
+    .nav-links a:hover{color:var(--c);text-decoration:none}
+    .nav-pill{background:var(--cd);border:1px solid var(--b);color:var(--c);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 12px;border-radius:20px}
+
+    /* HERO */
+    .hero{position:relative;overflow:hidden;padding:80px 2rem 70px;text-align:center}
+    .hero::before{content:'';position:absolute;inset:0;pointer-events:none;
+      background:radial-gradient(ellipse 70% 55% at 50% -5%,rgba(0,200,255,.11) 0%,transparent 65%),
+                 radial-gradient(ellipse 45% 45% at 85% 65%,rgba(124,58,237,.09) 0%,transparent 65%)}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--cd);border:1px solid var(--b);color:var(--c);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 16px;border-radius:30px;margin-bottom:22px}
+    .hero h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;line-height:1.15;letter-spacing:-.025em;margin-bottom:18px}
+    .grad{background:linear-gradient(95deg,var(--c) 0%,#a78bfa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-sub{color:var(--mu);font-size:1rem;max-width:580px;margin:0 auto 36px}
+    .pills{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+    .pill{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--bs);padding:7px 16px;border-radius:30px;font-size:.82rem;color:var(--mu)}
+    .dot{width:7px;height:7px;border-radius:50%}
+
+    /* OVERVIEW */
+    .overview{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1080px;margin:0 auto 64px;padding:0 1.5rem}
+    .ov-card{border-radius:var(--rl);border:1px solid var(--b);padding:26px 28px;position:relative;overflow:hidden;transition:transform .22s,box-shadow .22s}
+    .ov-card:hover{transform:translateY(-3px);box-shadow:0 8px 40px rgba(0,0,0,.5)}
+    .ov-card::after{content:'';position:absolute;top:0;left:0;width:100%;height:3px}
+    .ov-card.d1{background:linear-gradient(140deg,#0b1430,#0e1d42)}
+    .ov-card.d2{background:linear-gradient(140deg,#0f0b2e,#170e3c)}
+    .ov-card.d1::after{background:linear-gradient(90deg,var(--c),#3b82f6)}
+    .ov-card.d2::after{background:linear-gradient(90deg,var(--p),#c026d3)}
+    .ov-label{font-size:.68rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px}
+    .d1 .ov-label{color:var(--c)} .d2 .ov-label{color:#a78bfa}
+    .ov-card h2{font-size:1.15rem;font-weight:700;margin-bottom:9px}
+    .ov-card p{color:var(--mu);font-size:.87rem;margin-bottom:14px;line-height:1.5}
+    .tags{display:flex;flex-wrap:wrap;gap:6px}
+    .tag{font-size:.7rem;font-weight:600;padding:3px 10px;border-radius:20px}
+    .tc{background:var(--cd);color:var(--c);border:1px solid rgba(0,200,255,.22)}
+    .tp{background:var(--pd);color:#a78bfa;border:1px solid rgba(124,58,237,.28)}
+    .tg{background:var(--gd);color:var(--g);border:1px solid rgba(16,185,129,.28)}
+    .to{background:var(--od);color:var(--o);border:1px solid rgba(245,158,11,.28)}
+
+    /* DASHBOARD MAP */
+    .db-map{max-width:1080px;margin:0 auto 64px;padding:0 1.5rem}
+    .db-map h4{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);margin-bottom:14px}
+    .db-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .db-item{background:var(--card);border:1px solid var(--bs);border-radius:10px;padding:13px 15px;position:relative;overflow:hidden}
+    .db-item::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%}
+    .db-item.dc::before{background:var(--c)} .db-item.dp::before{background:var(--p)}
+    .db-item.dg::before{background:var(--g)} .db-item.do::before{background:var(--o)}
+    .db-num{font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+    .dc .db-num{color:var(--c)} .dp .db-num{color:#a78bfa} .dg .db-num{color:var(--g)} .do .db-num{color:var(--o)}
+    .db-name{font-size:.85rem;font-weight:700;margin-bottom:3px}
+    .db-desc{font-size:.75rem;color:var(--mu);line-height:1.4}
+
+    /* SECTION */
+    .wrap{max-width:1080px;margin:0 auto;padding:0 1.5rem}
+    .sec-hd{display:flex;align-items:center;gap:14px;padding-bottom:18px;border-bottom:1px solid var(--b);margin-bottom:32px}
+    .sec-badge{padding:5px 16px;border-radius:30px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+    .sbc{background:var(--cd);color:var(--c);border:1px solid var(--b)}
+    .sbp{background:var(--pd);color:#a78bfa;border:1px solid rgba(124,58,237,.28)}
+    .sec-hd h3{font-size:1.25rem;font-weight:700}
+    .sec-hd span{color:var(--mu);font-size:.85rem;display:block;margin-top:2px}
+
+    /* MODULE */
+    .modules{display:flex;flex-direction:column;gap:20px;margin-bottom:64px}
+    .mod{background:var(--card);border:1px solid var(--bs);border-radius:var(--rl);padding:26px 28px;position:relative;overflow:hidden;transition:background .2s,border-color .2s}
+    .mod:hover{background:var(--card-h);border-color:var(--b)}
+    .mod-bar{position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px}
+    .bc{background:var(--c)} .bp{background:var(--p)} .bg{background:var(--g)} .bo{background:var(--o)}
+    .mod-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:10px;flex-wrap:wrap}
+    .mod-kick{font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+    .kc{color:var(--c)} .kp{color:#a78bfa} .kg{color:var(--g)} .ko{color:var(--o)}
+    .mod h4{font-size:1.05rem;font-weight:700;line-height:1.3}
+    .dur{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:var(--mu);font-size:.76rem;font-weight:600;padding:5px 12px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+    .mod-desc{color:var(--mu);font-size:.88rem;margin-bottom:18px;line-height:1.55}
+
+    /* DB BADGE INLINE */
+    .db-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,200,255,.07);border:1px solid rgba(0,200,255,.2);color:var(--c);font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:6px;margin-bottom:14px}
+    .db-badge.dbp{background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.25);color:#a78bfa}
+    .db-badge.dbo{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.22);color:var(--o)}
+    .db-badge.dbg{background:rgba(16,185,129,.07);border-color:rgba(16,185,129,.22);color:var(--g)}
+
+    /* TIMELINE */
+    .tl-lbl{font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--fa);margin-bottom:10px}
+    .tl{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+    .step{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.025);border:1px solid var(--bs);border-radius:9px;padding:10px 14px}
+    .st{font-size:.7rem;font-weight:700;color:var(--fa);white-space:nowrap;min-width:80px;padding-top:2px}
+    .sb strong{display:block;font-size:.88rem;margin-bottom:2px}
+    .sb p{color:var(--mu);font-size:.83rem;line-height:1.5}
+
+    /* DEMO BLOCK */
+    .demo{background:rgba(0,200,255,.04);border:1px solid rgba(0,200,255,.16);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:.87rem}
+    .demo.dp{background:rgba(124,58,237,.05);border-color:rgba(124,58,237,.22)}
+    .demo.dg{background:rgba(16,185,129,.05);border-color:rgba(16,185,129,.22)}
+    .demo.do{background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.22)}
+    .demo-t{font-size:.67rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;margin-bottom:8px}
+    .dtc{color:var(--c)} .dtp{color:#a78bfa} .dtg{color:var(--g)} .dto{color:var(--o)}
+    .demo ul{padding-left:16px;color:var(--mu)}
+    .demo ul li{margin-bottom:5px;line-height:1.5}
+    .demo ul li strong{color:var(--tx)}
+
+    /* KPI CHIPS */
+    .kpi-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+    .kpi{background:rgba(255,255,255,.04);border:1px solid var(--bs);border-radius:7px;padding:6px 11px;font-size:.78rem}
+    .kpi span{display:block;font-size:.65rem;color:var(--fa);letter-spacing:.06em;text-transform:uppercase;margin-bottom:1px}
+    .kpi strong{color:var(--tx)}
+
+    /* EXERCISE */
+    .ex{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-left:3px solid var(--c);border-radius:0 10px 10px 0;padding:14px 16px;margin-bottom:16px}
+    .ex.ep{border-left-color:var(--p)} .ex.eg{border-left-color:var(--g)} .ex.eo{border-left-color:var(--o)}
+    .ex-lbl{font-size:.67rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;margin-bottom:8px}
+    .elc{color:var(--c)} .elp{color:#a78bfa} .elg{color:var(--g)} .elo{color:var(--o)}
+    .ex p{color:var(--mu);font-size:.86rem;line-height:1.55;margin-bottom:8px}
+    .ex p:last-child{margin-bottom:0}
+    .ex p em{color:var(--tx);font-style:italic}
+    .ex p strong{color:var(--tx)}
+    .ex ol,.ex ul{padding-left:18px;color:var(--mu);font-size:.86rem}
+    .ex ol li,.ex ul li{margin-bottom:5px;line-height:1.5}
+    .ex ol li strong,.ex ul li strong{color:var(--tx)}
+
+    /* DELIVERABLE */
+    .deliv{display:flex;gap:10px;align-items:flex-start;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:9px;padding:11px 14px;margin-bottom:16px;font-size:.85rem}
+    .deliv p{color:var(--mu);line-height:1.5}
+    .deliv p strong{color:var(--g)}
+
+    /* COLUMN PILLS */
+    .cols{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+    .col-pill{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--mu);font-size:.72rem;font-weight:600;padding:3px 9px;border-radius:6px;font-family:'Cascadia Code','Fira Code',monospace}
+    .col-pill.cc{color:var(--c);background:rgba(0,200,255,.07);border-color:rgba(0,200,255,.2)}
+    .col-pill.co{color:var(--o);background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.2)}
+    .col-pill.cg{color:var(--g);background:rgba(16,185,129,.07);border-color:rgba(16,185,129,.2)}
+    .col-pill.cr{color:var(--r);background:var(--rd);border-color:rgba(239,68,68,.2)}
+
+    /* RESOURCE */
+    .res{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;padding:6px 13px;border-radius:8px;border:1px solid var(--b);background:var(--cd);color:var(--c);transition:background .18s,border-color .18s;margin-right:8px;margin-top:4px}
+    .res:hover{background:rgba(0,200,255,.18);border-color:rgba(0,200,255,.4);text-decoration:none}
+    .res.rp{background:var(--pd);color:#a78bfa;border-color:rgba(124,58,237,.25)}
+    .res.rp:hover{background:rgba(124,58,237,.22);border-color:rgba(124,58,237,.5)}
+    .res.rg{background:var(--gd);color:var(--g);border-color:rgba(16,185,129,.25)}
+    .res.rg:hover{background:rgba(16,185,129,.2);border-color:rgba(16,185,129,.5)}
+    .res-note{color:var(--fa);font-size:.77rem}
+
+    /* DIVIDER */
+    .divider{max-width:1080px;margin:0 auto 56px;padding:0 1.5rem}
+    .divider hr{border:none;border-top:1px solid var(--b)}
+
+    /* TIPS */
+    .tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-bottom:64px}
+    .tip{background:var(--card);border:1px solid var(--bs);border-radius:var(--rr);padding:18px 20px}
+    .tip-ico{font-size:1.3rem;margin-bottom:8px}
+    .tip h5{font-size:.88rem;font-weight:700;margin-bottom:6px}
+    .tip p{color:var(--mu);font-size:.82rem;line-height:1.5}
+
+    /* FOOTER */
+    footer{background:var(--surface);border-top:1px solid var(--b);padding:36px 2rem;text-align:center}
+    .ft-brand{display:flex;align-items:center;justify-content:center;gap:10px;font-weight:800;font-size:.95rem;color:#fff;margin-bottom:10px}
+    .ft-logo{width:30px;height:30px;background:linear-gradient(135deg,var(--c),var(--p));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px}
+    footer p{color:var(--fa);font-size:.8rem}
+    .ft-nav{display:flex;justify-content:center;gap:22px;margin-top:14px;flex-wrap:wrap}
+    .ft-nav a{color:var(--mu);font-size:.8rem}
+    .ft-nav a:hover{color:var(--c)}
+
+    @media(max-width:768px){
+      .overview{grid-template-columns:1fr}
+      .db-grid{grid-template-columns:1fr 1fr}
+      .mod-hd{flex-direction:column}
+      .nav-links{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="brand">
+    <div class="brand-ico">🔐</div>
+    DATA BUNKER
+  </div>
+  <ul class="nav-links">
+    <li><a href="#dashboards">Dashboards</a></li>
+    <li><a href="#dia1">Día 1</a></li>
+    <li><a href="#dia2">Día 2</a></li>
+    <li><a href="#workflow">Workflow</a></li>
+  </ul>
+  <span class="nav-pill">Farmatodo Colombia</span>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="eyebrow">
+    <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+    Kickoff Workshop · 2 Días · 2 Horas por sesión
+  </div>
+  <h1>Plataforma de Precios<br/><span class="grad">+ Agente de Precios AI</span></h1>
+  <p class="hero-sub">Programa de capacitación diseñado para los equipos de pricing, categorías y trade marketing de Farmatodo Colombia.</p>
+  <div class="pills">
+    <div class="pill"><span class="dot" style="background:var(--c)"></span>8 dashboards en vivo</div>
+    <div class="pill"><span class="dot" style="background:var(--p)"></span>Agente AI con data propia</div>
+    <div class="pill"><span class="dot" style="background:var(--g)"></span>Price Variation en tiempo real</div>
+    <div class="pill"><span class="dot" style="background:var(--o)"></span>Custom Instructions en vivo</div>
+  </div>
+</header>
+
+<!-- OVERVIEW DAYS -->
+<div class="overview">
+  <div class="ov-card d1">
+    <div class="ov-label">Día 1 · 120 min</div>
+    <h2>Dashboards de Precios, Alertas y Análisis Competitivo</h2>
+    <p>Recorrido por los 8 dashboards de la plataforma: Price Index, Análisis Categorías, Histórico Full y Price Variation. El equipo identifica sus productos críticos con evidencia real.</p>
+    <div class="tags">
+      <span class="tag tc">One Pager</span>
+      <span class="tag tc">Análisis Categorías</span>
+      <span class="tag tc">Histórico</span>
+      <span class="tag tg">Price Variation</span>
+    </div>
+  </div>
+  <div class="ov-card d2">
+    <div class="ov-label">Día 2 · 120 min</div>
+    <h2>Agente AI, Oportunidades Comerciales y Configuración Estratégica</h2>
+    <p>Dashboard Portafolio, carga del archivo de ventas, Commercial Opportunities, AI Pricing Engine con datos reales y Custom Instructions con las reglas de negocio de Farmatodo.</p>
+    <div class="tags">
+      <span class="tag tp">AI Pricing Engine</span>
+      <span class="tag tp">Custom Instructions</span>
+      <span class="tag tc">Portafolio</span>
+      <span class="tag to">Commercial Opps</span>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD MAP -->
+<div class="db-map" id="dashboards">
+  <h4>Los 8 dashboards de la plataforma</h4>
+  <div class="db-grid">
+    <div class="db-item dc">
+      <div class="db-num">Dashboard 1</div>
+      <div class="db-name">One Pager</div>
+      <div class="db-desc">Price Index General, tendencias por fecha, tabla por canal, Avg Price por cadena</div>
+    </div>
+    <div class="db-item dc">
+      <div class="db-num">Dashboard 2</div>
+      <div class="db-name">Análisis Categorías</div>
+      <div class="db-desc">SKU a SKU — Idéntico / Match, semáforo IndexT, tabla con imagen del producto</div>
+    </div>
+    <div class="db-item dc">
+      <div class="db-num">Dashboard 3</div>
+      <div class="db-name">Histórico</div>
+      <div class="db-desc">Evolución de precio por SKU — Max / Min / Avg / Client Price, gráfica por retailer</div>
+    </div>
+    <div class="db-item dc">
+      <div class="db-num">Dashboard 4</div>
+      <div class="db-name">Comparador 2 Productos</div>
+      <div class="db-desc">Comparación paralela de 2 SKUs por UPC — gráficas de líneas por cadena</div>
+    </div>
+    <div class="db-item dc">
+      <div class="db-num">Dashboard 5</div>
+      <div class="db-name">Matriz de Precios</div>
+      <div class="db-desc">+ Barato / + Caro por SKU, EAN, imagen, Index e Index FULL por retailer</div>
+    </div>
+    <div class="db-item dc">
+      <div class="db-num">Dashboard 6</div>
+      <div class="db-name">Comparador de Precios</div>
+      <div class="db-desc">Prom / Min / Max por cadena con gráfica multicanal y tabla de posicionamiento</div>
+    </div>
+    <div class="db-item dp">
+      <div class="db-num">Dashboard 7</div>
+      <div class="db-name">Portafolio</div>
+      <div class="db-desc">Catálogo scrapeado del competidor — UPC, imagen, Precio Full / Final, URL promo</div>
+    </div>
+    <div class="db-item dg">
+      <div class="db-num">Dashboard 8</div>
+      <div class="db-name">Price Variation</div>
+      <div class="db-desc">Highest Price Increases + Drops — % vs Precio Anterior, columna Promo</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ DÍA 1 ══════════════ -->
+<div class="wrap" id="dia1">
+  <div class="sec-hd">
+    <span class="sec-badge sbc">Día 1</span>
+    <div>
+      <h3>Dashboards de Precios, Alertas y Análisis Competitivo</h3>
+      <span>120 min · Apertura + Módulos 1–4 + Cierre y tarea</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap modules">
+
+  <!-- APERTURA -->
+  <div class="mod">
+    <div class="mod-bar bc"></div>
+    <div class="mod-hd">
+      <div><div class="mod-kick kc">Apertura</div><h4>Bienvenida, Contexto y Reglas del Juego</h4></div>
+      <div class="dur"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>15 min · 0:00–0:15</div>
+    </div>
+    <p class="mod-desc">Alinear expectativas, confirmar accesos y presentar la arquitectura de la plataforma antes de entrar a los dashboards.</p>
+    <div class="tl-lbl">Distribución del tiempo</div>
+    <div class="tl">
+      <div class="step"><div class="st">0:00–0:05</div><div class="sb"><strong>Presentaciones</strong><p>Nombre, rol (pricing, categorías, trade marketing) y una expectativa del workshop. 30 seg por persona.</p></div></div>
+      <div class="step"><div class="st">0:05–0:10</div><div class="sb"><strong>Alcance de la plataforma</strong><p>Qué datos alimentan la plataforma: scrapers de competidores, frecuencia de actualización, canales monitoreados (online + físico) y retailers cubiertos.</p></div></div>
+      <div class="step"><div class="st">0:10–0:15</div><div class="sb"><strong>Login y acceso individual</strong><p>Confirmar que todos los participantes tienen credenciales activas y pueden navegar desde su dispositivo antes de entrar al Módulo 1.</p></div></div>
+    </div>
+    <div class="demo">
+      <div class="demo-t dtc">Retailers monitoreados — presentar al equipo</div>
+      <div class="cols" style="margin-bottom:0">
+        <span class="col-pill">Éxito Colombia</span><span class="col-pill">Éxito Ibagué</span>
+        <span class="col-pill">Olímpica Colombia</span><span class="col-pill">CruzVerde – Ibagué</span>
+        <span class="col-pill">Cruzverde Colombia</span><span class="col-pill">D1</span>
+        <span class="col-pill">D1 – Bogotá Tienda Domicilios</span><span class="col-pill">Farmacias Pasteur</span>
+        <span class="col-pill">Medipiel Colombia</span><span class="col-pill">Bellapiel Colombia</span>
+        <span class="col-pill">Falabella</span><span class="col-pill">Rappi Colombia</span>
+      </div>
+    </div>
+    <a class="res" href="https://www.oecd.org/digital/data-driven-innovation/" target="_blank" rel="noopener">
+      <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      OCDE — Innovación Basada en Datos
+    </a>
+    <span class="res-note">Marco internacional sobre uso estratégico de datos en retail y consumo masivo.</span>
+  </div>
+
+  <!-- MÓDULO 1 -->
+  <div class="mod">
+    <div class="mod-bar bc"></div>
+    <div class="mod-hd">
+      <div><div class="mod-kick kc">Módulo 1</div><h4>One Pager — Price Index General y Tendencias por Fecha</h4></div>
+      <div class="dur"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>30 min · 0:15–0:45</div>
+    </div>
+    <div class="db-badge">📊 Dashboard: One Pager</div>
+    <p class="mod-desc">Foto macro del posicionamiento de Farmatodo vs el mercado hoy y en el tiempo. Este dashboard da el contexto general antes de bajar al nivel de SKU en los módulos siguientes.</p>
+    <div class="tl-lbl">Distribución del tiempo</div>
+    <div class="tl">
+      <div class="step"><div class="st">0:15–0:22</div><div class="sb"><strong>Demo KPIs de cabecera</strong><p>Lectura del Price Index General, índices positivos y negativos, conteo ALTO vs BAJO, precio promedio propio vs competencia.</p></div></div>
+      <div class="step"><div class="st">0:22–0:30</div><div class="sb"><strong>Demo gráfica "Price Index Por Fecha"</strong><p>Cómo leer los picos del índice, qué evento puede haberlos causado (promo de competidor, liquidación), uso del slider de fechas.</p></div></div>
+      <div class="step"><div class="st">0:30–0:38</div><div class="sb"><strong>Demo tabla "Price Index – Última Fecha"</strong><p>Columnas Index_price e Index_price_full por canal y departamento. Identificar qué canal presiona más en Belleza y Cuidado Personal.</p></div></div>
+      <div class="step"><div class="st">0:38–0:45</div><div class="sb"><strong>Ejercicio guiado</strong><p>Cada participante filtra por su departamento y lee el índice.</p></div></div>
+    </div>
+    <div class="demo">
+      <div class="demo-t dtc">KPIs del dashboard — explicar cada uno</div>
+      <div class="kpi-row">
+        <div class="kpi"><span>Price Index General</span><strong>–58.57 %</strong></div>
+        <div class="kpi"><span>Solo Índice Negativos</span><strong>–6.79 %</strong></div>
+        <div class="kpi"><span># Productos BAJO</span><strong>5,905</strong></div>
+        <div class="kpi"><span>Solo Índice Positivos</span><strong>+13.41 %</strong></div>
+        <div class="kpi"><span># Productos ALTO</span><strong>7,185</strong></div>
+        <div class="kpi"><span>Precio Avg Competencia</span><strong>$161.10 K</strong></div>
+        <div class="kpi"><span>Mi Precio Avg</span><strong>$66.74 K</strong></div>
+        <div class="kpi"><span>% Desc. Avg Competidores</span><strong>10.36 %</strong></div>
+      </div>
+      <div class="demo-t dtc" style="margin-top:8px">Columnas clave en la tabla "Price Index – Última Fecha"</div>
+      <div class="cols" style="margin-bottom:0">
+        <span class="col-pill cc">Index_price</span>
+        <span class="col-pill cc">Index_price_full</span>
+        <span class="col-pill">Canal</span>
+        <span class="col-pill">Departamento</span>
+      </div>
+    </div>
+    <div class="ex">
+      <div class="ex-lbl elc">Ejercicio práctico — 7 min (cada participante en su pantalla)</div>
+      <p><strong>Tarea:</strong> Filtrar el dashboard por el departamento que cada uno gestiona. Leer el Price Index de ese departamento e identificar:</p>
+      <ol>
+        <li>¿Cuál canal los tiene más caros (Index_price_full más alto)?</li>
+        <li>¿Hay alguna semana con pico notable en la gráfica "Price Index Por Fecha"?</li>
+      </ol>
+      <p><em>5 min — exploración individual · 2 min — ronda de hallazgos en voz alta (30 seg por persona)</em></p>
+    </div>
+    <div class="deliv"><div>📌</div><p><strong>Entregable verbal:</strong> Cada persona comparte qué encontró. El facilitador anota — estos hallazgos serán el insumo para las Custom Instructions del Día 2.</p></div>
+    <a class="res" href="https://www.sic.gov.co/estudios-de-mercado" target="_blank" rel="noopener">
+      <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      SIC Colombia — Estudios de Mercado y Precios
+    </a>
+    <span class="res-note">La Superintendencia de Industria y Comercio publica estudios oficiales de monitoreo de precios y competencia en Colombia.</span>
+  </div>
+
+  <!-- MÓDULO 2 -->
+  <div class="mod">
+    <div class="mod-bar bc"></div>
+    <div class="mod-hd">
+      <div><div class="mod-kick kc">Módulo 2</div><h4>Análisis Categorías — Comparación SKU a SKU (Idéntico / Match)</h4></div>
+      <div class="dur"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>25 min · 0:45–1:10</div>
+    </div>
+    <div class="db-badge">📊 Dashboard: Análisis Categorías</div>
+    <p class="mod-desc">Ver la posición de precio de cada producto específico vs competidores, con imagen e índice. El toggle Idéntico / Match define la validez y tipo de comparación.</p>
+    <div class="tl-lbl">Distribución del tiempo</div>
+    <div class="tl">
+      <div class="step"><div class="st">0:45–0:52</div><div class="sb"><strong>Demo tabla comparativa superior</strong><p>Columnas Precio S/D y Precio C/D por canal, Index e Index FULL. Bar chart de ítems ALTO / BAJO / PARITY por retailer.</p></div></div>
+      <div class="step"><div class="st">0:52–0:58</div><div class="sb"><strong>Demo tabla detalle SKU inferior</strong><p>Recorrer columna por columna con un producto real: Mi Departamento, Marca, Descripción, Barcode, Mi Precio, Index, Index FULL, IndexT (semáforo), Comparación, Retailer, Precio Final, Image.</p></div></div>
+      <div class="step"><div class="st">0:58–1:10</div><div class="sb"><strong>Ejercicio — búsqueda de producto específico</strong><p>Cada participante busca un producto real de su categoría usando la barra "Descripción SKU".</p></div></div>
+    </div>
+    <div class="demo">
+      <div class="demo-t dtc">Diferencia Idéntico vs Match — clave para leer el índice correctamente</div>
+      <ul>
+        <li><strong>Idéntico:</strong> mismo barcode / UPC exacto encontrado en el competidor. Comparación 1:1.</li>
+        <li><strong>Match:</strong> producto equivalente aunque sea otra presentación o marca. Comparación por similitud.</li>
+        <li><strong>Index FULL:</strong> incluye descuento o promoción activa del competidor (columna Promo).</li>
+        <li><strong>IndexT (semáforo):</strong> ALTO = Farmatodo más caro · BAJO = Farmatodo más barato · PARITY = precio igual.</li>
+      </ul>
+    </div>
+    <div class="demo-t dtc" style="padding:0 0 8px">Columnas de la tabla detalle</div>
+    <div class="cols">
+      <span class="col-pill">Mi Departamento</span><span class="col-pill">Mi Marca</span>
+      <span class="col-pill">Barcode</span><span class="col-pill">Mi Descripción</span>
+      <span class="col-pill">Mi Precio</span><span class="col-pill cc">Index</span>
+      <span class="col-pill cc">Index FULL</span>
+      <span class="col-pill co">IndexT</span>
+      <span class="col-pill">Comparación</span><span class="col-pill">Retailer</span>
+      <span class="col-pill">Precio Final</span><span class="col-pill">Image</span>
+    </div>
+    <div class="ex">
+      <div class="ex-lbl elc">Ejercicio — búsqueda de producto específico (12 min)</div>
+      <p><strong>Tarea:</strong> Buscar en "Descripción SKU" un producto que conocen bien (ej. shampoo líder, crema corporal top, protector solar KVI). Identificar:</p>
+      <ol>
+        <li>¿El semáforo IndexT muestra ALTO, BAJO o PARITY vs el competidor más barato?</li>
+        <li>¿La diferencia es en precio S/D o solo aparece con descuento (C/D, Index FULL)?</li>
+        <li>¿Qué canal específico los tiene más baratos y cuánto es la brecha en pesos?</li>
+      </ol>
+      <p><em>8 min — búsqueda y análisis individual · 4 min — cada uno comparte su caso en 1 min</em></p>
+    </div>
+    <div class="deliv"><div>📌</div><p><strong>Entregable:</strong> Anotar — nombre del producto, brecha en %, canal más agresivo. <strong>Este hallazgo alimentará las Custom Instructions del Día 2.</strong></p></div>
+    <a class="res" href="https://www.gs1co.org/" target="_blank" rel="noopener">
+      <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      GS1 Colombia — Estándares de Identificación de Producto
+    </a>
+    <span class="res-note">Referencia oficial sobre UPCs, barcodes y estándares de identificación de SKUs en Colombia y Latinoamérica.</span>
+  </div>
+
+  <!-- MÓDULO 3 -->
+  <div class="mod">
+    <div class="mod-bar bc"></div>
+    <div class="mod-hd">
+      <div><div class="mod-kick kc">Módulo 3</div><h4>Histórico Full, Comparador 2 Productos y Comparador de Precios</h4></div>
+      <div class="dur"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>20 min · 1:10–1:30</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+      <div class="db-badge">📊 Histórico</div>
+      <div class="db-badge">📊 Comparador 2 Productos</div>
+      <div class="db-badge">📊 Comparador de Precios</div>
+    </div>
+    <p class="mod-desc">Rastrear la evolución de precio de un producto en el tiempo e identificar si un movimiento fue promo puntual o cambio permanente. Incluye comparación lado a lado de 2 SKUs y ranking de Prom/Min/Max por cadena.</p>
+    <div class="tl-lbl">Distribución del tiempo</div>
+    <div class="tl">
+      <div class="step"><div class="st">1:10–1:18</div><div class="sb"><strong>Demo Histórico Full</strong><p>Panel izquierdo: imagen del producto, Descripción SKU, UPC, Max Price, Min Price, Avg Price, Client Price. Gráfica de líneas por retailer. Tabla de precios por fecha.</p></div></div>
+      <div class="step"><div class="st">1:18–1:24</div><div class="sb"><strong>Demo Comparador de Precios (Prom/Min/Max)</strong><p>Buscar por EAN — tabla con Prom/Min/Max por cadena. Imágenes del producto para validar que es el mismo ítem. Gráfica multicanal.</p></div></div>
+      <div class="step"><div class="st">1:24–1:30</div><div class="sb"><strong>Ejercicio — trazar el histórico de un KVI</strong><p>Usar el producto encontrado en el Módulo 2 para analizar su evolución temporal.</p></div></div>
+    </div>
+    <div class="demo">
+      <div class="demo-t dtc">Panel izquierdo del Histórico — KPIs clave por SKU</div>
+      <div class="kpi-row">
+        <div class="kpi"><span>Max Price</span><strong>$51,094</strong></div>
+        <div class="kpi"><span>Min Price</span><strong>$31,387</strong></div>
+        <div class="kpi"><span>Avg Price</span><strong>$46,391</strong></div>
+        <div class="kpi"><span>Client Price</span><strong>$46,950</strong></div>
+      </div>
+      <ul>
+        <li><strong>Caso a mostrar en vivo:</strong> un producto con caída fuerte de precio en un competidor → cómo detectarlo en la gráfica y qué decisión tomar.</li>
+        <li><strong>Comparador 2 Productos:</strong> selector de UPC para cada producto → 2 gráficas paralelas para ver si la bajada de uno afecta al otro.</li>
+        <li><strong>Comparador de Precios:</strong> tabla Prom/Min/Max por cadena + imágenes para confirmar que es el mismo ítem antes de comparar precio.</li>
+      </ul>
+    </div>
+    <div class="ex">
+      <div class="ex-lbl elc">Ejercicio — trazar el histórico de un KVI (6 min)</div>
+      <p><strong>Tarea:</strong> Usar el producto encontrado en el Módulo 2. Abrir su Histórico Full y responder:</p>
+      <ol>
+        <li>¿Hace cuántas semanas el competidor bajó el precio (ver gráfica de líneas)?</li>
+        <li>¿Fue una promo puntual o un cambio permanente (comparar con columna Promo)?</li>
+        <li>¿Cómo ha reaccionado Farmatodo? ¿El Client Price se movió?</li>
+      </ol>
+      <p><em>4 min — análisis individual · 2 min — conclusión grupal rápida</em></p>
+    </div>
+    <a class="res" href="https://www.oecd.org/competition/" target="_blank" rel="noopener">
+      <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      OCDE — Competencia y Monitoreo de Precios
+    </a>
+    <span class="res-note">Marco conceptual sobre vigilancia de precios, prácticas competitivas y análisis de tendencias en mercados de retail.</span>
+  </div>
+
+  <!-- MÓDULO 4 -->
+  <div class="mod">
+    <div class="mod-bar bg"></div>
+    <div class="mod-hd">
+      <div><div class="mod-kick kg">Módulo 4</div><h4>Price Variation — Highest Price Increases & Drops</h4></div>
+      <div class="dur"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>30 min · 1:30–2:00</div>
+    </div>
+    <div class="db-badge dbg">📊 Dashboard: Price Variation</div>
+    <p class="mod-desc">Activar el sistema de alertas y definir el proceso semanal del equipo de pricing. El dashboard Price Variation muestra en tiempo real los productos con mayor variación porcentual vs su precio anterior.</p>
+    <div class="tl-lbl">Distribución del tiempo</div>
+    <div class="tl">
+      <div class="step"><div class="st">1:30–1:38</div><div class="sb"><strong>Demo Highest Price Increases</strong><p>Tabla con mayor % de aumento — Departamento, Descripción SKU, Mi Precio, Canal, Precio C/D, Promo, vs Precio Ant, % vs Precio Ant (verde).</p></div></div>
+      <div class="step"><div class="st">1:38–1:46</div><div class="sb"><strong>Demo Highest Price Drops</strong><p>Tabla con mayor % de caída — mismas columnas, % vs Precio Ant en rojo. Cómo identificar si es promo (columna Promo = Sí) o cambio real de precio.</p></div></div>
+      <div class="step"><div class="st">1:46–1:55</div><div class="sb"><strong>Ejercicio — configurar y analizar variaciones reales</strong><p>El equipo revisa las alertas actuales y decide cuáles requieren acción esta semana.</p></div></div>
+      <div class="step"><div class="st">1:55–2:00</div><div class="sb"><strong>Cierre Día 1 + tarea para el Día 2</strong><p>Resumen de hallazgos y formato exacto del archivo de ventas.</p></div></div>
+    </div>
+    <div class="demo dg">
+      <div class="demo-t dtg">Columnas de ambas tablas (Increases + Drops)</div>
+      <div class="cols">
+        <span class="col-pill">Departamento</span>
+        <span class="col-pill">Descripción SKU</span>
+        <span class="col-pill">Mi Precio</span>
+        <span class="col-pill">Canal</span>
+        <span class="col-pill cc">Precio C/D</span>
+        <span class="col-pill">Promo</span>
+        <span class="col-pill cc">vs Precio Ant</span>
+        <span class="col-pill cg">% vs Precio Ant ↑</span>
+        <span class="col-pill cr">% vs Precio Ant ↓</span>
+      </div>
+      <ul>
+        <li><strong>Ritual semanal de pricing — proponer al equipo:</strong></li>
+        <li><strong>Lunes:</strong> revisar Highest Drops → decidir si responder (¿es promo o permanente?).</li>
+        <li><strong>Viernes:</strong> revisar Highest Increases → oportunidad de subir precio sin perder competitividad.</li>
+      </ul>
+    </div>
+    <div class="ex eg">
+      <div class="ex-lbl elg">Ejercicio — analizar variaciones reales (9 min)</div>
+      <p><strong>Paso a paso:</strong></p>
+      <ol>
+        <li>Abrir Price Variation y filtrar por departamento prioritario.</li>
+        <li>Revisar las alertas actuales: identificar el <strong>top 3 productos con mayor variación negativa hoy</strong>.</li>
+        <li>Para cada uno: ¿columna Promo dice "Sí"? Si es Sí = promo puntual. Si es No = cambio real. ¿Debería Farmatodo reaccionar?</li>
+        <li>Revisar top 3 con mayor aumento: ¿hay margen para subir precio en alguno?</li>
+      </ol>
+      <p><em>4 min — análisis individual · 3 min — análisis del top 3 · 2 min — decisión grupal: ¿cuál tiene prioridad esta semana?</em></p>
+    </div>
+    <div class="demo do">
+      <div class="demo-t dto">Cierre Día 1 (5 min) + Tarea para el Día 2</div>
+      <ul>
+        <li>Resumen: 3–5 productos críticos identificados durante el workshop.</li>
+        <li><strong>Tarea Farmatodo:</strong> enviar archivo de ventas (UPC, volumen semanal, precio costo, margen bruto) — formato Excel simple, top 200 SKUs.</li>
+        <li>Cada participante anota sus <strong>3 KVIs prioritarios</strong> para llevarlos al agente mañana.</li>
+      </ul>
+    </div>
+    <a class="res rg" href="https://www.dane.gov.co/index.php/estadisticas-por-tema/comercio-interno" target="_blank" rel="noopener">
+      <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      DANE Colombia — Estadísticas de Comercio Minorista
+    </a>
+    <span class="res-note">Datos oficiales del DANE sobre precios y comercio minorista en Colombia para contextualizar los movimientos detectados en Price Variation.</span>
+  </div>
+
+</div><!-- /módulos día 1 -->
+<div class="divider"><hr/></div>
+
+<!-- ══════════════ DÍA 2 ══════════════ -->
+<div class="wrap" id="dia2">
+  <div class="sec-hd">
+    <span class="sec-badge sbp">Día 2</span>
+    <div>
+      <h3>Agente AI, Oportunidades Comerciales y Configuración Estratégica</h3>
+      <span>120 min · Módulos 5–8 + Cierre y workflow operativo</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap modules">
+
+  <!-- MÓDULO 5 -->
+  <div class="mod">
+    <div class="mod-bar bp"></div>
+    <div class="mod-hd">
+      <div><div class="mod-kick kp">Módulo 5</div><h4>Portafolio + Carga del Archivo de Ventas</h4></div>
+      <div class="dur"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>20 min · 0:00–0:20</div>
+    </div>
+    <div class="db-badge dbp">📊 Dashboard: Portafolio</div>
+    <p class="mod-desc">Conectar los datos de Farmatodo con la base de conocimiento del agente. El dashboard Portafolio muestra el catálogo scrapeado del competidor. El UPC es la llave de cruce entre las ventas propias y los precios del mercado.</p>
+    <div class="tl-lbl">Distribución del tiempo</div>
+    <div class="tl">
+      <div class="step"><div class="st">0:00–0:08</div><div class="sb"><strong>Demo dashboard Portafolio</strong><p>Tabla del catálogo scrapeado: Retailer, UPC, imagen, Item, Precio Full, Precio Final, URL de promoción. Cómo sirve para auditar que los precios publicados en el canal son correctos.</p></div></div>
+      <div class="step"><div class="st">0:08–0:20</div><div class="sb"><strong>Carga y validación del archivo de ventas</strong><p>Subir el Excel de Farmatodo a "Uploaded Files", confirmar disponibilidad con el símbolo @, mostrar qué columnas usará el agente como llave de cruce.</p></div></div>
+    </div>
+    <div class="demo dp">
+      <div class="demo-t dtp">Columnas del dashboard Portafolio</div>
+      <div class="cols">
+        <span class="col-pill">Retailer</span>
+        <span class="col-pill cc">UPC</span>
+        <span class="col-pill">Image</span>
+        <span class="col-pill">Item</span>
+        <span class="col-pill">Item Char.</span>
+        <span class="col-pill cc">Precio Full</span>
+        <span class="col-pill cc">Precio Final</span>
+        <span class="col-pill">Promoción (URL)</span>
+      </div>
+      <ul>
+        <li>Navegar a <strong>Uploaded Files</strong> y hacer el upload del Excel de ventas de Farmatodo.</li>
+        <li>Confirmar que aparece disponible con el símbolo <code>@</code> en la conversación del agente.</li>
+        <li><strong>El UPC es la llave de cruce</strong> entre el archivo de ventas y los datos de precio del mercado.</li>
+        <li>Primer "wow": hacer una consulta de diagnóstico inmediata con sus propios productos.</li>
+      </ul>
+    </div>
+    <a class="res rp" href="https://www.gs1.org/standards/gs1-global-trade-item-number-gtin" target="_blank" rel="noopener">
+      <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      GS1 Global — Estándar GTIN (UPC/Barcode)
+    </a>
+    <span class="res-note">Documentación oficial del estándar GTIN que define cómo se estructuran y validan los UPCs usados como llave de cruce en el agente.</span>
+  </div>
+
+  <!-- MÓDULO 6 -->
+  <div class="mod">
+    <div class="mod-bar bo"></div>
+    <div class="mod-hd">
+      <div><div class="mod-kick ko">Módulo 6</div><h4>Commercial Opportunities — Inteligencia Generada por AI</h4></div>
+      <div class="dur"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>25 min · 0:20–0:45</div>
+    </div>
+    <div class="db-badge dbo">🤖 Módulo del Agente AI</div>
+    <p class="mod-desc">Entender cómo el agente convierte los datos del scraper en recomendaciones de negocio accionables. Cada card es el output de un prompt configurable que consume los datos de precio en tiempo real.</p>
+    <div class="tl-lbl">Distribución del tiempo</div>
+    <div class="tl">
+      <div class="step"><div class="st">0:20–0:28</div><div class="sb"><strong>Demo cards de oportunidades</strong><p>KPIs superiores (# competidores, cambio promedio, # oportunidades), donut chart de UPCs por competidor, bar chart de gap de precio por categoría.</p></div></div>
+      <div class="step"><div class="st">0:28–0:36</div><div class="sb"><strong>Demo botón Update y exportación</strong><p>Cuándo y con qué frecuencia correrlo. Exportación a PDF y Excel para llevar al comité de precios.</p></div></div>
+      <div class="step"><div class="st">0:36–0:45</div><div class="sb"><strong>Ejercicio — definir qué quiere ver Farmatodo en sus cards</strong><p>Sesión de descubrimiento de requerimientos de customización de prompt.</p></div></div>
+    </div>
+    <div class="demo do">
+      <div class="demo-t dto">Cards de análisis — leer en voz alta cada una</div>
+      <ul>
+        <li><strong>Análisis de Competidores:</strong> quién se movió, en qué categorías y con qué magnitud.</li>
+        <li><strong>Oportunidades de Precio:</strong> productos donde Farmatodo puede ajustar precio con bajo riesgo.</li>
+        <li><strong>Cambios de Precio:</strong> variaciones detectadas en el último período de scraping.</li>
+      </ul>
+    </div>
+    <div class="ex eo">
+      <div class="ex-lbl elo">Ejercicio — descubrimiento de requerimientos (9 min)</div>
+      <p><strong>Objetivo real:</strong> recopilar los requerimientos de customización de prompt que Data Bunker implementará después del kickoff. Es una sesión de descubrimiento disfrazada de ejercicio.</p>
+      <p>Preguntar al equipo: ¿qué análisis adicional querrían ver en las cards? Ejemplos para guiar:</p>
+      <ul>
+        <li><em>"Quiero ver solo mis KVIs de Cuidado Personal."</em></li>
+        <li><em>"Quiero que la card de oportunidades priorice productos con margen &gt;30%."</em></li>
+        <li><em>"Quiero alertas cuando D1 o CruzVerde baje más de 10% en marcas genéricas."</em></li>
+      </ul>
+      <p><em>5 min — lluvia de ideas en grupo · 4 min — facilitador documenta y confirma lo que va a implementar</em></p>
+    </div>
+    <a class="res" href="https://procolombia.co/publicaciones/inteligencia-de-mercados" target="_blank" rel="noopener">
+      <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      ProColombia — Inteligencia de Mercados
+    </a>
+    <span class="res-note">Publicaciones de ProColombia sobre tendencias de consumo y oportunidades comerciales en el mercado colombiano.</span>
+  </div>
+
+  <!-- MÓDULO 7 -->
+  <div class="mod">
+    <div class="mod-bar bp"></div>
+    <div class="mod-hd">
+      <div><div class="mod-kick kp">Módulo 7</div><h4>AI Pricing Engine — Primeras Conversaciones con Datos Reales</h4></div>
+      <div class="dur"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>40 min · 0:45–1:25</div>
+    </div>
+    <div class="db-badge dbp">🤖 AI Pricing Engine</div>
+    <p class="mod-desc">El módulo más extenso del Día 2. El equipo hace sus propias preguntas al agente usando los datos de precio del scraper + el archivo de ventas cargado. Dos rondas: diagnóstico y acción.</p>
+    <div class="tl-lbl">Distribución del tiempo</div>
+    <div class="tl">
+      <div class="step"><div class="st">0:45–0:52</div><div class="sb"><strong>Demo sidebar + Data Dictionary</strong><p>Conversations, Saved Queries, Data Dictionary (campos disponibles), Uploaded Files, Agent Memory, Interactive Guide.</p></div></div>
+      <div class="step"><div class="st">0:52–1:00</div><div class="sb"><strong>Demo primera conversación guiada + cruce con ventas</strong><p>Consulta en vivo con datos reales + uso del @archivo de ventas + guardar Saved Query.</p></div></div>
+      <div class="step"><div class="st">1:00–1:20</div><div class="sb"><strong>Ejercicio — Ronda 1 diagnóstico (10 min) + Ronda 2 acción (10 min)</strong><p>Cada participante hace 2 preguntas reales al agente sobre su categoría.</p></div></div>
+      <div class="step"><div class="st">1:20–1:25</div><div class="sb"><strong>Saved Queries</strong><p>Guardar las consultas más útiles para reutilizarlas cada semana.</p></div></div>
+    </div>
+    <div class="demo dp">
+      <div class="demo-t dtp">Demo guiada (15 min) — consultas en vivo</div>
+      <ul>
+        <li><strong>Primera consulta:</strong> <em>"¿Cuáles son los 5 productos de Cuidado Personal donde estamos más caros vs Éxito Colombia hoy?"</em> — leer la respuesta y validar con el dashboard Análisis Categorías.</li>
+        <li><strong>Cruce con ventas:</strong> <em>"@[archivo ventas] de los productos donde estamos más caros, ¿cuáles tienen mayor volumen de venta semanal?"</em></li>
+        <li><strong>Saved Query:</strong> guardar esa consulta combinada como favorita para usarla cada semana.</li>
+      </ul>
+    </div>
+    <div class="ex ep">
+      <div class="ex-lbl elp">Ronda 1 — Diagnóstico (10 min)</div>
+      <p>Cada participante escribe su propia consulta. Sugerencias si se bloquean:</p>
+      <ul>
+        <li><em>"¿Qué productos de Belleza tienen IndexT = ALTO y están entre mis top 20 en ventas?"</em></li>
+        <li><em>"¿Cuántos SKUs de Dermocosmética tengo a más de 10% por encima del precio más barato del mercado?"</em></li>
+        <li><em>"¿Qué competidor ha hecho más cambios de precio en Cuidado Personal en los últimos 14 días?"</em></li>
+      </ul>
+    </div>
+    <div class="ex ep">
+      <div class="ex-lbl elp">Ronda 2 — Acción (10 min)</div>
+      <ul>
+        <li><em>"Si bajo el precio de [producto X] a paridad con Éxito Colombia, ¿cuánto impacto tendría en margen considerando mi volumen semanal?"</em> (usa el @archivo de ventas)</li>
+        <li><em>"¿Qué productos de Price Variation debería revisar esta semana con mayor urgencia?"</em></li>
+      </ul>
+      <p><strong>Dinámica:</strong> una persona comparte pantalla, hace la pregunta en voz alta, el agente responde, el grupo comenta si la respuesta tiene sentido con lo que saben del negocio.</p>
+    </div>
+    <a class="res rp" href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">
+      <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Anthropic — Guía Oficial de Prompt Engineering
+    </a>
+    <span class="res-note">Guía de Anthropic sobre cómo formular preguntas que maximizan la calidad y precisión de las respuestas del agente.</span>
+  </div>
+
+  <!-- MÓDULO 8 -->
+  <div class="mod">
+    <div class="mod-bar bp"></div>
+    <div class="mod-hd">
+      <div><div class="mod-kick kp">Módulo 8</div><h4>Custom Instructions — El Cerebro del Agente con Reglas de Farmatodo</h4></div>
+      <div class="dur"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>25 min · 1:25–1:50</div>
+    </div>
+    <div class="db-badge dbp">🤖 Custom Instructions + /recuerda</div>
+    <p class="mod-desc">Configurar las reglas de negocio persistentes para que el agente siempre responda desde el contexto de Farmatodo. Las instrucciones se construyen directamente de los hallazgos del Día 1.</p>
+    <div class="tl-lbl">Distribución del tiempo</div>
+    <div class="tl">
+      <div class="step"><div class="st">1:25–1:30</div><div class="sb"><strong>Demo: modal de Custom Instructions</strong><p>Mostrar dónde se configuran, cómo se aplican en todas las conversaciones, estructura correcta: Regla + contexto + acción esperada del agente.</p></div></div>
+      <div class="step"><div class="st">1:30–1:45</div><div class="sb"><strong>Ejercicio colaborativo: redactar las 3 reglas de Farmatodo</strong><p>Trabajo en grupo usando los hallazgos del Día 1 como materia prima.</p></div></div>
+      <div class="step"><div class="st">1:45–1:50</div><div class="sb"><strong>Validar con /recuerda y prueba en vivo</strong><p>Pegar en Custom Instructions, guardar y hacer una pregunta para confirmar que el agente aplica las reglas correctamente.</p></div></div>
+    </div>
+    <div class="ex ep">
+      <div class="ex-lbl elp">Plantilla para redactar las 3 reglas — basadas en hallazgos del Día 1</div>
+      <p><strong>Regla 1 — KVIs / Competitividad:</strong><br/>
+      <em>"Soy Farmatodo Colombia, categoría [X]. Mis KVIs nunca deben estar más de [5]% por encima del precio más bajo entre [Éxito Colombia, Olímpica, D1]. Si detectas un KVI con IndexT = ALTO y fuera de ese rango, priorízalo como alerta alta."</em></p>
+      <p><strong>Regla 2 — Marca Propia:</strong><br/>
+      <em>"Mis marcas propias deben mantener margen mínimo de [X]%. Si un competidor baja precio y presiona ese margen, alerta pero NO recomiendes bajar del piso de margen."</em></p>
+      <p><strong>Regla 3 — Contexto del negocio:</strong><br/>
+      <em>"Mis categorías de mayor volumen son Cuidado Personal, Belleza y Dermocosmética. Prioriza análisis en ese orden. Mis competidores más relevantes son Éxito Colombia y Olímpica Colombia."</em></p>
+      <p><em>5 min — borrador individual · 5 min — consolidar las 3 reglas en grupo · 3 min — pegar en Custom Instructions · 2 min — validar que el agente las aplica</em></p>
+    </div>
+    <div class="demo dp">
+      <div class="demo-t dtp">Uso de /recuerda en la conversación</div>
+      <ul>
+        <li>Alternativa rápida cuando surge una regla nueva durante el análisis en vivo.</li>
+        <li>Ejemplo: <code>/recuerda que D1 y CruzVerde son los competidores más agresivos en Belleza según lo visto hoy.</code></li>
+        <li>Las instrucciones guardadas con /recuerda se aplican desde la siguiente consulta en esa sesión.</li>
+      </ul>
+    </div>
+    <a class="res rp" href="https://ocw.mit.edu/search/?q=machine+learning+business" target="_blank" rel="noopener">
+      <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      MIT OpenCourseWare — Machine Learning para Negocios
+    </a>
+    <span class="res-note">Cursos del MIT sobre cómo sistemas de IA codifican reglas de negocio y toman decisiones consistentes con el contexto de la organización.</span>
+  </div>
+
+  <!-- CIERRE -->
+  <div class="mod">
+    <div class="mod-bar bg"></div>
+    <div class="mod-hd">
+      <div><div class="mod-kick kg">Cierre</div><h4>Workflow Operativo y Compromisos Mutuos</h4></div>
+      <div class="dur"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>10 min · 1:50–2:00</div>
+    </div>
+    <div id="workflow"></div>
+    <p class="mod-desc">Dejar al equipo con un proceso claro para el día a día post-kickoff: quién hace qué, cuándo y con qué dashboard o herramienta.</p>
+    <div class="demo dg">
+      <div class="demo-t dtg">Workflow operativo semanal — proponer y validar con el equipo</div>
+      <ul>
+        <li><strong>Lunes:</strong> abrir <em>Price Variation</em> → revisar Highest Price Drops → decidir si responder (¿Promo = No?).</li>
+        <li><strong>Miércoles:</strong> correr el <em>AI Pricing Engine</em> con preguntas de acción sobre categorías críticas.</li>
+        <li><strong>Viernes:</strong> exportar reporte de <em>Commercial Opportunities</em> (PDF/Excel) para el comité de precios.</li>
+      </ul>
+    </div>
+    <div class="demo dp">
+      <div class="demo-t dtp">Próximos pasos — Data Bunker</div>
+      <ul>
+        <li>Implementar customización de cards de Commercial Opportunities con los requerimientos del Módulo 6.</li>
+        <li>Inyección continua de datos de mercado (scrapers activos en todos los canales monitoreados).</li>
+      </ul>
+    </div>
+    <div class="demo do">
+      <div class="demo-t dto">Próximos pasos — Farmatodo</div>
+      <ul>
+        <li>Completar lista oficial de KVIs por categoría (insumo para Custom Instructions definitivas).</li>
+        <li>Entregar datos de venta completos para extender el cruce con el agente.</li>
+        <li>Definir el <strong>owner de pricing</strong>: quién configura alertas en Price Variation, quién escala decisiones de precio al comité.</li>
+      </ul>
+    </div>
+    <a class="res rg" href="https://hbswk.hbs.edu/item/the-art-of-pricing" target="_blank" rel="noopener">
+      <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Harvard Business School — Pricing como Capacidad Organizacional
+    </a>
+    <span class="res-note">Marco académico de HBS sobre cómo institucionalizar el pricing data-driven como proceso recurrente en organizaciones de retail.</span>
+  </div>
+
+</div><!-- /módulos día 2 -->
+
+<!-- TIPS -->
+<div class="wrap">
+  <div class="sec-hd" style="margin-bottom:24px">
+    <span class="sec-badge" style="background:rgba(245,158,11,.1);color:var(--o);border:1px solid rgba(245,158,11,.28)">Facilitador</span>
+    <div><h3>Tips para Manejar el Tiempo en Vivo</h3><span>Situaciones comunes y cómo resolverlas sin perder el ritmo</span></div>
+  </div>
+  <div class="tips-grid">
+    <div class="tip"><div class="tip-ico">⏱️</div><h5>Se adelanta el tiempo</h5><p>El Módulo 3 (Histórico) es el más prescindible. Conviértelo en demo rápida de 8 min y manda un video corto después. No afecta el Día 2.</p></div>
+    <div class="tip"><div class="tip-ico">🔥</div><h5>Módulo 7 genera mucho engagement</h5><p>Puede extenderse hasta 50 min. Si pasa, recorta el Módulo 8 a solo demo de instrucciones y completa la configuración en sesión de seguimiento.</p></div>
+    <div class="tip"><div class="tip-ico">🤔</div><h5>Preguntas técnicas profundas</h5><p>"Lo agendamos en una sesión de seguimiento" — no pierdas el ritmo del workshop por una pregunta de arquitectura o de origen de datos del scraper.</p></div>
+    <div class="tip"><div class="tip-ico">😶</div><h5>Silencio en los ejercicios</h5><p>Ten 2–3 consultas de ejemplo listas para romper el hielo. Una vez que alguien comparte pantalla, los demás siguen.</p></div>
+    <div class="tip"><div class="tip-ico">⚠️</div><h5>El agente da respuesta inesperada</h5><p>Úsalo como enseñanza: "Esto pasa cuando la consulta no es específica — así se reformula." El error se convierte en el mejor ejemplo del módulo.</p></div>
+    <div class="tip"><div class="tip-ico">📂</div><h5>Archivo de ventas no llega</h5><p>Tener un dataset demo con UPCs de la plataforma (productos ya visibles en los dashboards) para no perder el cruce con el agente en el Módulo 7.</p></div>
+    <div class="tip"><div class="tip-ico">🎯</div><h5>Módulo 6 genera muchos requerimientos</h5><p>Señal de alto engagement. Documenta todo — son los requerimientos de customización de prompt que implementarás después del kickoff.</p></div>
+    <div class="tip"><div class="tip-ico">📋</div><h5>Custom Instructions genéricas</h5><p>Volver a los hallazgos del Día 1 anotados: los productos con IndexT = ALTO identificados en Módulos 1 y 2 son la materia prima de las reglas del agente.</p></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-brand"><div class="ft-logo">🔐</div>DATA BUNKER</div>
+  <p>Programa de Capacitación · Farmatodo Colombia · 2026</p>
+  <div class="ft-nav">
+    <a href="#dashboards">8 Dashboards</a>
+    <a href="#dia1">Día 1 — Precios</a>
+    <a href="#dia2">Día 2 — Agente AI</a>
+    <a href="#workflow">Workflow Operativo</a>
+  </div>
+</footer>
+
+</body>
+</html>
